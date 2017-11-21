@@ -19,52 +19,63 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * In the slides leading up to this exercise you should have learned about the following APIs.
+ * In the slides leading up to this exercise you should have learned about the
+ * following APIs.
  * <p/>
  * {@link MutableList#collect(Function)}<br>
  * {@link MutableList#select(Predicate)}<br>
  *
- * @see <a href="http://eclipse.github.io/eclipse-collections-kata/pet-kata/#/2">Exercise 1 Slides</a>
+ * @see <a href=
+ *      "http://eclipse.github.io/eclipse-collections-kata/pet-kata/#/2">Exercise
+ *      1 Slides</a>
  */
-public class Exercise1Test extends PetDomainForKata
-{
-    @Test
-    public void getFirstNamesOfAllPeople()
-    {
-        // Replace null, with a transformation method on MutableList.
-        MutableList<String> firstNames = null; // this.people...
+public class Exercise1Test extends PetDomainForKata {
+	@Test
+	public void getFirstNamesOfAllPeople() {
+		// Replace null, with a transformation method on MutableList.
+		MutableList<String> firstNames = null; // this.people...
+		//前提：PetDomainForKataの無名クラスを@Test実行に初期化。
+		//無名クラスが持つMutableList<Person>型peopleが持つPersonクラスのfirstNameを集めたmutableなリストを生成する。
+		// interface MutableList<T>クラスがもつメソッドにcollectがある。
+		//   @Override
+	    //<V> MutableList<V> collect(Function<? super T, ? extends V> function);
+		//collectはfunctionが設定されていない。interface内を実装することでラムダ式になったりメソッド参照できる。
+		//上記メソッドは、V（Person）を継承しているのでPersonメソッドを参照することができる。
+		//ラムダ式で記述する場合は、people内のエンティティpersonが順次処理されることが推測できるので、
+		//型は定義せず、perosn->を渡してpersonのメソッドを参照して実行することができる。
+		//戻り値の読み方がわからず困っている。
+		firstNames = this.people.collect(Person::getFirstName);//メソッド参照
+		//or
+		firstNames = this.people.collect(person->person.getFirstName());//ラムダ式
+		MutableList<String> expectedFirstNames = Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry",
+				"Harry", "John");
+		Assert.assertEquals(expectedFirstNames, firstNames);
+	}
 
-        MutableList<String> expectedFirstNames = Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John");
-        Assert.assertEquals(expectedFirstNames, firstNames);
-    }
+	@Test
+	public void getNamesOfMarySmithsPets() {
+		Person person = this.getPersonNamed("Mary Smith");
+		MutableList<Pet> pets = person.getPets();
 
-    @Test
-    public void getNamesOfMarySmithsPets()
-    {
-        Person person = this.getPersonNamed("Mary Smith");
-        MutableList<Pet> pets = person.getPets();
+		// Replace null, with a transformation method on MutableList.
+		MutableList<String> names = null; // pets...
 
-        // Replace null, with a transformation method on MutableList.
-        MutableList<String> names = null; // pets...
+		Assert.assertEquals("Tabby", names.makeString());
+	}
 
-        Assert.assertEquals("Tabby", names.makeString());
-    }
+	@Test
+	public void getPeopleWithCats() {
+		// Replace null, with a positive filtering method on MutableList.
+		MutableList<Person> peopleWithCats = null; // this.people...
 
-    @Test
-    public void getPeopleWithCats()
-    {
-        // Replace null, with a positive filtering method on MutableList.
-        MutableList<Person> peopleWithCats = null;  // this.people...
+		Verify.assertSize(2, peopleWithCats);
+	}
 
-        Verify.assertSize(2, peopleWithCats);
-    }
+	@Test
+	public void getPeopleWithoutCats() {
+		// Replace null, with a negative filtering method on MutableList.
+		MutableList<Person> peopleWithoutCats = null; // this.people...
 
-    @Test
-    public void getPeopleWithoutCats()
-    {
-        // Replace null, with a negative filtering method on MutableList.
-        MutableList<Person> peopleWithoutCats = null;  // this.people...
-
-        Verify.assertSize(6, peopleWithoutCats);
-    }
+		Verify.assertSize(6, peopleWithoutCats);
+	}
 }
