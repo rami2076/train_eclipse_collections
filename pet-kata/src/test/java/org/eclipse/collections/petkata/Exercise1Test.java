@@ -63,6 +63,7 @@ public class Exercise1Test extends PetDomainForKata {
 	 * personのペット取得
 	 *ペットの名前一覧
 	 *合致するけ検査
+	 *collect関数のtrain
 	 */
 	@Test
 	public void getNamesOfMarySmithsPets() {
@@ -77,11 +78,23 @@ public class Exercise1Test extends PetDomainForKata {
 		Assert.assertEquals("Tabby", names.makeString());
 	}
 
+
+/*
+ * Peopleのペットの内、猫がペットの場合のPersonのリストを集約できるかのテスト。
+ * hasPet関数を使わずにしようとしたけど、よくわからなくなった。
+ * まだ関数使いこなせていない。
+ * 答えを参照->https://github.com/toastkidjp/eclipse-collections-kata/blob/toastkidjp_all_solved/pet-kata/src/test/java/org/eclipse/collections/petkata/Exercise1Test.java
+ *
+ *select関数のtrain
+ */
 	@Test
 	public void getPeopleWithCats() {
 		// Replace null, with a positive filtering method on MutableList.
-		MutableList<Person> peopleWithCats = null; // this.people...
-
+		//MutableList<Person> peopleWithCats = null; // this.people...
+		MutableList<Person> peopleWithCats = this.people.select(person->person.hasPet(PetType.CAT));
+		//or
+		//メソッド参照の記述方法がわからなかったが、とりあえず進めようという判断。
+		peopleWithCats = this.people.select(person->person.hasPet(PetType.CAT));
 		Verify.assertSize(2, peopleWithCats);
 	}
 
