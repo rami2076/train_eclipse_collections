@@ -32,34 +32,48 @@ import org.junit.Test;
 public class Exercise1Test extends PetDomainForKata {
 	@Test
 	public void getFirstNamesOfAllPeople() {
-		// Replace null, with a transformation method on MutableList.
-		MutableList<String> firstNames = null; // this.people...
-		//前提：PetDomainForKataの無名クラスを@Test実行に初期化。
-		//無名クラスが持つMutableList<Person>型peopleが持つPersonクラスのfirstNameを集めたmutableなリストを生成する。
+
+		// 前提：PetDomainForKataの無名クラスを@Test実行に初期化。
+		// 無名クラスが持つMutableList<Person>型peopleが持つPersonクラスのfirstNameを集めたmutableなリストを生成する。
 		// interface MutableList<T>クラスがもつメソッドにcollectがある。
-		//   @Override
-	    //<V> MutableList<V> collect(Function<? super T, ? extends V> function);
-		//collectはfunctionが設定されていない。interface内を実装することでラムダ式になったりメソッド参照できる。
-		//上記メソッドは、V（Person）を継承しているのでPersonメソッドを参照することができる。
-		//ラムダ式で記述する場合は、people内のエンティティpersonが順次処理されることが推測できるので、
-		//型は定義せず、perosn->を渡してpersonのメソッドを参照して実行することができる。
-		//戻り値の読み方がわからず困っている。
-		firstNames = this.people.collect(Person::getFirstName);//メソッド参照
-		//or
-		firstNames = this.people.collect(person->person.getFirstName());//ラムダ式
+		// @Override
+		// <V> MutableList<V> collect(Function<? super T, ? extends V>
+		// function);
+		// collectはfunctionが設定されていない。interface内を実装することでラムダ式になったりメソッド参照できる。
+		// 上記メソッドは、V（Person）を継承しているのでPersonメソッドを参照することができる。
+		// ラムダ式で記述する場合は、people内のエンティティpersonが順次処理されることが推測できるので、
+		// 型は定義せず、perosn->を渡してpersonのメソッドを参照して実行することができる。
+		// 戻り値の読み方がわからず困っている。->returnは新しいmutableCollection！
+
+		// Replace null, with a transformation method on MutableList.
+		//MutableList<String> firstNames =null;
+		MutableList<String> firstNames =
+		this.people.collect(Person::getFirstName);// メソッド参照
+		// or
+		firstNames = this.people.collect(person -> person.getFirstName());// ラムダ式
 		MutableList<String> expectedFirstNames = Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry",
 				"Harry", "John");
 		Assert.assertEquals(expectedFirstNames, firstNames);
 	}
 
+
+	/*
+	 * Mary Smith のペットが取得できるかのテスト。
+	 * Peronを取得。
+	 * personのペット取得
+	 *ペットの名前一覧
+	 *合致するけ検査
+	 */
 	@Test
 	public void getNamesOfMarySmithsPets() {
 		Person person = this.getPersonNamed("Mary Smith");
 		MutableList<Pet> pets = person.getPets();
-
 		// Replace null, with a transformation method on MutableList.
-		MutableList<String> names = null; // pets...
-
+		//MutableList<String> names =null;
+		MutableList<String> names =
+				pets.collect(pet->pet.getName());//ラムダ式
+		//or
+			names = pets.collect(Pet::getName);//メソッド参照
 		Assert.assertEquals("Tabby", names.makeString());
 	}
 
