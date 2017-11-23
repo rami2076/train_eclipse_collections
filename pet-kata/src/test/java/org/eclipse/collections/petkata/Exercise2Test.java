@@ -78,22 +78,63 @@ public class Exercise2Test extends PetDomainForKata {
 	 *
 	 * テストを定義し、immutableListのallSatisfyで検証する。
 	 * allSatisfyも引数がpredicateです。
+	 * predicateが設定されていないnullだと普通にNullPointerExceptionがでる。
+	 *
+	 * 少しずつ慣れてきた。
+	 *
+	 * java.lang.NullPointerException
+	at org.eclipse.collections.impl.utility.internal.InternalArrayIterate.shortCircuit(InternalArrayIterate.java:679)
+	at org.eclipse.collections.impl.utility.internal.InternalArrayIterate.allSatisfy(InternalArrayIterate.java:751)
+	at org.eclipse.collections.impl.list.mutable.FastList.allSatisfy(FastList.java:1212)
+	at org.eclipse.collections.petkata.Exercise2Test.doAllPeopleHavePets(Exercise2Test.java:90)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+	at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+	at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+	at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:86)
+	at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:38)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:459)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:678)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:382)
+	at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:192)
 	 */
 
 	@Test
 	public void doAllPeopleHavePets() {
 
 		Predicate<Person> predicate = person -> person.isPetPerson();
-		predicate =null;
 		boolean result = true; // replace with a method call send to this.people
 								// that checks if all people have pets
 		result = this.people.allSatisfy(predicate);
 		Assert.assertFalse(result);
 	}
 
+	/*
+	 * mmutableListがRichIterableから継承したcountメソッド
+	 * countメソッドも引数はPredicate
+	 * Predicateで指定された判定を実行する。
+	 */
+
+
 	@Test
 	public void howManyPeopleHaveCats() {
 		int count = 0;
+		Predicate<Person> predicate =person->person.hasPet(PetType.CAT);
+		count = this.people.count(predicate);
 		Assert.assertEquals(2, count);
 	}
 
