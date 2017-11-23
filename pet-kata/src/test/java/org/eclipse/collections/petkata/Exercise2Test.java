@@ -128,8 +128,6 @@ public class Exercise2Test extends PetDomainForKata {
 	 * countメソッドも引数はPredicate
 	 * Predicateで指定された判定を実行する。
 	 */
-
-
 	@Test
 	public void howManyPeopleHaveCats() {
 		int count = 0;
@@ -138,9 +136,40 @@ public class Exercise2Test extends PetDomainForKata {
 		Assert.assertEquals(2, count);
 	}
 
+	/*
+	 * MarySmithを抽出する。
+	 * firstName =Marry
+	 * LastName = Smith
+	 * に合致する要素を返す。
+	 *
+	 * detective関数を用いる。
+	 * 最初に一致する。要素を返す関数。
+	 * 要素に重複がない場合に使えるかな。
+	 *
+	 * detective関数も引数は、Predicateなので、条件つけてみる。
+	 * lamdaの中も変数をしっかりみてくれる。
+	 *
+	 *詳細は理解していないが、predicateは名詞としては述語である。
+	 *メソッド名なので、動詞である。意味は、断定する。（英英ではない）
+	 *もともと、論理学のA is B. AはBである。のBを示す言葉としてアリストテレスが命名した言葉の様子。
+	 *wikipediaがソースではっきりしたソースは示されておらず、ソースを追うこともできなかった。
+	 */
 	@Test
 	public void findMarySmith() {
+		String firtName ="Mary";
+		String lastName = "Smith";
 		Person result = null;
+
+		//bigin test code
+		//case  prepare predicate method. predicate is  https://ja.wikipedia.org/wiki/%E8%BF%B0%E8%AA%9E.
+		Predicate<Person> predicate = person->firtName.equals(person.getFirstName()) && lastName.equals(person.getLastName());
+		result = this.people.detect(predicate);
+		//case inline function . Less description than the above cases possible.
+		result = this.people.detect(person->firtName.equals(person.getFirstName()) && lastName.equals(person.getLastName()));
+		//end test code.
+
+
+		//test
 		Assert.assertEquals("Mary", result.getFirstName());
 		Assert.assertEquals("Smith", result.getLastName());
 	}
