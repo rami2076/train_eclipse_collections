@@ -48,6 +48,8 @@ import org.junit.Test;
 public class Exercise2Test extends PetDomainForKata {
 
 	/*
+	 * 猫をペットとしている人物が一人でもいるかのテスト
+	 *
 	 * Predicateのテスト内容を記述
 	 * mutableListが持つanySatisfy()の引数predicateを渡す。
 	 * 正確には、mutableListの継承親ー＞MutableCollection<T>ー＞RichIterable<T>が持つメソッド。
@@ -70,13 +72,22 @@ public class Exercise2Test extends PetDomainForKata {
 		Assert.assertTrue(this.people.anySatisfy(predicate));
 	}
 
-	
-	
+
+	/*
+	 * petを飼っていない人物がpeopleリストの中に一人いれば成功。
+	 *
+	 * テストを定義し、immutableListのallSatisfyで検証する。
+	 * allSatisfyも引数がpredicateです。
+	 */
+
 	@Test
 	public void doAllPeopleHavePets() {
+
 		Predicate<Person> predicate = person -> person.isPetPerson();
+		predicate =null;
 		boolean result = true; // replace with a method call send to this.people
 								// that checks if all people have pets
+		result = this.people.allSatisfy(predicate);
 		Assert.assertFalse(result);
 	}
 
