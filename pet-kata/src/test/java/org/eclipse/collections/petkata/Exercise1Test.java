@@ -29,6 +29,7 @@ import org.junit.Test;
  *      "http://eclipse.github.io/eclipse-collections-kata/pet-kata/#/2">Exercise
  *      1 Slides</a>
  */
+
 public class Exercise1Test extends PetDomainForKata {
 	@Test
 	public void getFirstNamesOfAllPeople() {
@@ -98,11 +99,18 @@ public class Exercise1Test extends PetDomainForKata {
 		Verify.assertSize(2, peopleWithCats);
 	}
 
+	/*
+	 * ペットが猫以外の場合に集約できるかのテスト
+	 * selectの反対。
+	 * reject関数のtrain。
+	 * 特定の条件に合致する情報を排除したcollectionを生成する。
+	 * 関数内部の条件設定で否定形を用いなくても使用できる点が良い。
+	 */
 	@Test
 	public void getPeopleWithoutCats() {
 		// Replace null, with a negative filtering method on MutableList.
-		MutableList<Person> peopleWithoutCats = null; // this.people...
-
+		//MutableList<Person> peopleWithoutCats = null; // this.people...
+		MutableList<Person> peopleWithoutCats =this.people.reject(person->person.hasPet(PetType.CAT));
 		Verify.assertSize(6, peopleWithoutCats);
 	}
 }
