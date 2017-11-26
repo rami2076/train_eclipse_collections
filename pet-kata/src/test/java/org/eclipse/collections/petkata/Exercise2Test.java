@@ -376,7 +376,7 @@ public class Exercise2Test extends PetDomainForKata {
 	public void getPeopleWithCatsRefactor() {
 		// use method reference, NOT lambdas, to solve the problem below
 		MutableList<Person> peopleWithCatsMethodRef = null;
-		peopleWithCatsMethodRef = this.people.selectWith(Person::hasPet,PetType.CAT);
+		peopleWithCatsMethodRef = this.people.selectWith(Person::hasPet, PetType.CAT);
 		Verify.assertSize(2, peopleWithCatsMethodRef);
 	}
 
@@ -390,7 +390,7 @@ public class Exercise2Test extends PetDomainForKata {
 	public void getPeopleWithoutCatsRefactor() {
 		// use method reference, NOT lambdas, to solve the problem below
 		MutableList<Person> peopleWithoutCatsMethodRef = null;
-		peopleWithoutCatsMethodRef = this.people.rejectWith(Person::hasPet,PetType.CAT);
+		peopleWithoutCatsMethodRef = this.people.rejectWith(Person::hasPet, PetType.CAT);
 		Verify.assertSize(6, peopleWithoutCatsMethodRef);
 	}
 }
