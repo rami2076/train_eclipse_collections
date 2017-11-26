@@ -285,14 +285,13 @@ public class Exercise2Test extends PetDomainForKata {
 	public void getAllPetsOfAllPeople() {
 		Function<Person, Iterable<PetType>> function = person -> person.getPetTypes();
 		MutableSet<PetType> petTypes = this.people.flatCollect(function, Sets.mutable.empty());
-		//or
+		// or
 		petTypes = this.people.flatCollect(function).toSet();
 		Assert.assertEquals(
 				Sets.mutable.with(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD,
 						PetType.SNAKE),
 				petTypes);
 	}
-
 
 	/*
 	 * ここではmutableListの初期化を行っている。
@@ -303,14 +302,13 @@ public class Exercise2Test extends PetDomainForKata {
 
 	@Test
 	public void getFirstNamesOfAllPeople() {
-		//MutableList<String> firstNames = null; // Transform this.people into a
-												// list of first names
+		// MutableList<String> firstNames = null; // Transform this.people into a
+		// list of first names
 		MutableList<String> firstNames = this.people.collect(Person::getFirstName);
 		Assert.assertEquals(
 				Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John"),
 				firstNames);
 	}
-
 
 	/*
 	 * doAnyPeopleHaveCatsのrefactoringを求めるテスト。
@@ -329,12 +327,12 @@ public class Exercise2Test extends PetDomainForKata {
 	 * 上記は引数が2ある場合に用いられる。メソッド参照を行うためのクラス。
 	 * 難解である。
 	 *
-     * Returns true if the predicate evaluates to true for any element of the collection, or return false.
-     * Returns false if the collection is empty.
-     *
-     * @since 5.0
+	 * Returns true if the predicate evaluates to true for any element of the collection, or return false.
+	 * Returns false if the collection is empty.
+	 *
+	 * @since 5.0
 
-    <P> boolean anySatisfyWith(Predicate2<? super T, ? super P> predicate, P parameter);
+	<P> boolean anySatisfyWith(Predicate2<? super T, ? super P> predicate, P parameter);
 	 */
 
 	@Test
@@ -355,8 +353,6 @@ public class Exercise2Test extends PetDomainForKata {
 	 *
 	 */
 
-
-
 	@Test
 	public void doAllPeopleHaveCatsRefactor() {
 		boolean peopleHaveCatsLambda = this.people.allSatisfy(person -> person.hasPet(PetType.CAT));
@@ -368,10 +364,17 @@ public class Exercise2Test extends PetDomainForKata {
 		Assert.assertFalse(peopleHaveCatsMethodRef);
 	}
 
+	/*
+	 *  getPeopleWithCats のrefactoring
+	 *  method referenceで記述。
+	 *  猫を飼っている飼い主をのリスト返す。
+	 */
+
 	@Test
 	public void getPeopleWithCatsRefactor() {
 		// use method reference, NOT lambdas, to solve the problem below
 		MutableList<Person> peopleWithCatsMethodRef = null;
+		peopleWithCatsMethodRef = this.people.selectWith(Person::hasPet,PetType.CAT);
 		Verify.assertSize(2, peopleWithCatsMethodRef);
 	}
 
