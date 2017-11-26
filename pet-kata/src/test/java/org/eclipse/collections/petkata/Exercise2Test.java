@@ -55,6 +55,8 @@ public class Exercise2Test extends PetDomainForKata {
 	 * 正確には、mutableListの継承親ー＞MutableCollection<T>ー＞RichIterable<T>が持つメソッド。
 	 * 渡したcollection内をplidicateで規定された条件で判定し、一つでもTRUEだった場合にtrueを返す。
 	 *
+	 * 関数anySatisfyの関数
+	 *
 	 * RichIterableのAPI
 	 *
 	 * https://www.eclipse.org/collections/javadoc/7.0.0/org/eclipse/
@@ -65,13 +67,12 @@ public class Exercise2Test extends PetDomainForKata {
 	 */
 	@Test
 	public void doAnyPeopleHaveCats() {
-		//Predicate<Person> predicate = null; // replace null with a Predicate
-											// lambda which checks for
-											// PetType.CAT
-		Predicate<Person> predicate=person -> person.hasPet(PetType.CAT);
+		// Predicate<Person> predicate = null; // replace null with a Predicate
+		// lambda which checks for
+		// PetType.CAT
+		Predicate<Person> predicate = person -> person.hasPet(PetType.CAT);
 		Assert.assertTrue(this.people.anySatisfy(predicate));
 	}
-
 
 	/*
 	 * petを飼っていない人物がpeopleリストの中に一人いれば成功。
@@ -79,6 +80,8 @@ public class Exercise2Test extends PetDomainForKata {
 	 * テストを定義し、immutableListのallSatisfyで検証する。
 	 * allSatisfyも引数がpredicateです。
 	 * predicateが設定されていないnullだと普通にNullPointerExceptionがでる。
+	 *
+	 * 関数allSatisfyのtrain
 	 *
 	 * 少しずつ慣れてきた。
 	 *
@@ -127,11 +130,13 @@ public class Exercise2Test extends PetDomainForKata {
 	 * mmutableListがRichIterableから継承したcountメソッド
 	 * countメソッドも引数はPredicate
 	 * Predicateで指定された判定を実行する。
+	 *
+	 * 関数countのtrain
 	 */
 	@Test
 	public void howManyPeopleHaveCats() {
 		int count = 0;
-		Predicate<Person> predicate =person->person.hasPet(PetType.CAT);
+		Predicate<Person> predicate = person -> person.hasPet(PetType.CAT);
 		count = this.people.count(predicate);
 		Assert.assertEquals(2, count);
 	}
@@ -153,31 +158,47 @@ public class Exercise2Test extends PetDomainForKata {
 	 *メソッド名なので、動詞である。意味は、断定する。（英英ではない）
 	 *もともと、論理学のA is B. AはBである。のBを示す言葉としてアリストテレスが命名した言葉の様子。
 	 *wikipediaがソースではっきりしたソースは示されておらず、ソースを追うこともできなかった。
+	 *
+	 *関数detectiveのtrain
 	 */
 	@Test
 	public void findMarySmith() {
-		String firtName ="Mary";
+		String firtName = "Mary";
 		String lastName = "Smith";
 		Person result = null;
 
-		//bigin test code
-		//case  prepare predicate method. predicate is  https://ja.wikipedia.org/wiki/%E8%BF%B0%E8%AA%9E.
-		Predicate<Person> predicate = person->firtName.equals(person.getFirstName()) && lastName.equals(person.getLastName());
+		// bigin test code
+		// case prepare predicate method. predicate is https://ja.wikipedia.org/wiki/%E8%BF%B0%E8%AA%9E.
+		Predicate<Person> predicate = person -> firtName.equals(person.getFirstName())
+				&& lastName.equals(person.getLastName());
 		result = this.people.detect(predicate);
-		//case inline function . Less description than the above cases possible.
-		result = this.people.detect(person->firtName.equals(person.getFirstName()) && lastName.equals(person.getLastName()));
-		//end test code.
+		// case inline function . Less description than the above cases possible.
+		result = this.people
+				.detect(person -> firtName.equals(person.getFirstName()) && lastName.equals(person.getLastName()));
+		// end test code.
 
-
-		//test
+		// test
 		Assert.assertEquals("Mary", result.getFirstName());
 		Assert.assertEquals("Smith", result.getLastName());
 	}
 
+	/*
+	 * 内容は依然やった内容とほぼ同等。
+	 * ペットを持つ人のリストを作成し人数が7であるかを測定。
+	 * isPetPersonメソッドのテストを行う。
+	 * Personクラスが持つ、isPetPaeronメソッドとMutableListクラスのselectメソッドを使用してリストを作成
+	 *
+	 *
+	 *JunitのAssertを継承したorg.eclipse.collections.impl.test.Verifyクラスのテスト。
+	 *collectionクラスに適したテストメソッドを持つ。
+	 *
+	 *関数assertSizeのtrain
+	 */
 	@Test
 	public void getPeopleWithPets() {
-		MutableList<Person> petPeople = this.people; // replace with only the
+		//MutableList<Person> petPeople = this.people; // replace with only the
 														// pet owners
+		MutableList<Person> petPeople = this.people.select(person->person.isPetPerson());
 		Verify.assertSize(7, petPeople);
 	}
 
