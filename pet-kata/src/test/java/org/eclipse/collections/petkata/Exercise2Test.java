@@ -196,16 +196,86 @@ public class Exercise2Test extends PetDomainForKata {
 	 */
 	@Test
 	public void getPeopleWithPets() {
-		//MutableList<Person> petPeople = this.people; // replace with only the
-														// pet owners
-		MutableList<Person> petPeople = this.people.select(person->person.isPetPerson());
+		// MutableList<Person> petPeople = this.people; // replace with only the
+		// pet owners
+		MutableList<Person> petPeople = this.people.select(person -> person.isPetPerson());
 		Verify.assertSize(7, petPeople);
 	}
+
+	/*
+	 * mutableList はflatCollectを RichIterableから継承し、オーバーライドしている。
+	 * RichIterativeはflatCollectはオーバーロードしている。
+	 * 1<V> RichIterable<V> flatCollect(Function<? super T, ? extends Iterable<V>> function);
+	 * 2<V, R extends Collection<V>> R flatCollect(Function<? super T, ? extends Iterable<V>> function, R target);
+	 * 1のみをオーバライドしているのがmutableList
+	 * 今回は2を使用。
+	 * 1も2もfunctionを利用している。
+	 * functionにはfunctioniterativeのアノテーションが使用されており、指定されたVの型の値をgetterして返す。
+	 * 上記のfunctionはEclipseCollectionsの独自クラスで規定されている。
+	 * Tは特定クラスで、Vは特定クラスが持つcollectionの型と思われる。
+	 * その値をV型でcollectionにして返す。この時、入れ子のcollectionができるが、
+	 * その入れ子を解除してフラットなcollectionにしてくれるのがこのクラス。
+	 * また1のoverrideは以下である。以下の場合mutablelistの型が指定されているが、
+	 * 格納したいクラスはmutableSetである。
+	 * そのため今回は2のメソッドを使用する。
+	 * mutableList以外のcollectionを使用する場合にはこちらのメソッドを使用するということ。
+	 *  @Override
+	*<V> MutableList<V> flatCollect(Function<? super T, ? extends Iterable<V>> function);
+	 *
+	 *Sets.mutable.empty()はsetの初期化記法。
+	 *List, Set, Bag, Map, Multimap等、すべてのコンテナに対してファクトリメソッドが存在（of(), with()どちら でも同様の初期化が可能）
+	 *MutableList<String> mutableList = Lists.mutable.of("One", "One", "Two", "Three");
+	 *MutableList<String> mutableList = Lists.mutable.with("One", "One", "Two", "Three");
+	*MutableSet<String> mutableSet = Sets.mutable.of("One", "One", "Two", "Three");
+	*MutableBag<String> mutableBag = Bags.mutable.of("One", "One", "Two", "Three");
+	*MutableMap<String, String> mutableMap = Maps.mutable.of("key1", "value1", "key2", "value2", "key3", "value3");
+	*Multimap<String, String> multimapWithList = Multimaps.mutable.list.of("key1", "value1-1", "key1", "value1-2", "key2",
+	*"value2-1");
+	*
+	*空のコレクションを作るにはempty(), of(), with()どれでも可
+	*MutableList<String> mutableListWithBlank = Lists.mutable.empty();
+	*MutableList<String> mutableListWithBlank = Lists.mutable.of();
+	*MutableList<String> mutableListWithBlank = Lists.mutable.with();
+	 *
+	 *すべてのプリミティブコンテナに対してもファクトリメソッドが存在
+	MutableIntList intList = IntLists.mutable.of(1, 2, 3);
+	MutableLongList longList = LongLists.mutable.of(1L, 2L, 3L);
+	MutableCharList charList = CharLists.mutable.of('a', 'b', 'c');
+	MutableShortList shortList = ShortLists.mutable.of((short)1, (short)2, (short)3);
+	MutableByteList byteList = ByteLists.mutable.of((byte)1, (byte)2, (byte)3);
+	MutableBooleanList booleanList = BooleanLists.mutable.of(true, false);
+	MutableFloatList floatList = FloatLists.mutable.of(1.0f, 2.0f, 3.0f);
+	MutableDoubleList doubleList = DoubleLists.mutable.of(1.0, 2.0, 3.0);
+	IntIntervalを使うと範囲指定したintのコレクションを作成することが可能
+	IntInterval oneTo10 = IntInterval.fromTo(1, 10);// 1から10までのint
+	// [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+	IntInterval oneTo10By3 = IntInterval.fromToBy(1, 10, 3); // 1から10まで3ずつ増分したint
+	// [1, 4, 7, 10]
+	IntInterval oddsFrom1To10 = IntInterval.oddsFromTo(1, 10); // 1から10までの奇数
+	// [1, 3, 5, 7, 9]
+	IntInterval evensFrom1To10 = IntInterval.evensFromTo(1, 10); // 1から10までの偶数
+	// [2, 4, 6, 8, 10]
+	 *reffer
+	 *http://www.goldmansachs.com/gs-collections/documents/2015-11-28_JJUG_CCC.pdf
+	 *
+	 *SetはJavaが持っているcollectionの一つ。
+	 *重複がない場合に追加する。
+	 *EclipseCollectionsのSetはjava.util.*のsetを継承しているので同じようにエラーを出さずに追加してくれる。
+	 *
+	 * Same as flatCollect, only the results are collected into the target collection.
+	 *
+	 * @param function The {@link Function} to apply
+	 * @param target   The collection into which results should be added.
+	 * @return {@code target}, which will contain a flattened collection of results produced by applying the given {@code function}
+	 * @see #flatCollect(Function)
+	 *
+	//<V, R extends Collection<V>> R flatCollect(Function<? super T, ? extends Iterable<V>> function, R target);
+	 */
 
 	@Test
 	public void getAllPetsOfAllPeople() {
 		Function<Person, Iterable<PetType>> function = person -> person.getPetTypes();
-		MutableSet<PetType> petTypes = null;
+		MutableSet<PetType> petTypes = this.people.flatCollect(function, Sets.mutable.empty());
 		Assert.assertEquals(
 				Sets.mutable.with(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD,
 						PetType.SNAKE),
