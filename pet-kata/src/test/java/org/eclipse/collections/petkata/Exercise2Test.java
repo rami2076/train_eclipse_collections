@@ -311,6 +311,32 @@ public class Exercise2Test extends PetDomainForKata {
 				firstNames);
 	}
 
+
+	/*
+	 * doAnyPeopleHaveCatsのrefactoringを求めるテスト。
+	 * 猫を飼っている人はいるかというテスト
+	 *
+	 * selectをメソッド参照で書く際に記述方法
+	 *
+	 * selectWith関数のtrain
+	 *
+	 * method referenceの書き方登場。
+	 * 引数が二つある場合に記述するに使用する。
+	 *
+	 * 下記がそれであるが、なかなか難解。
+	 * Predicate2で指定している箇所でPを使用する。
+	 * BiPredicate<T1, T2>を継承している。
+	 * 上記は引数が2ある場合に用いられる。メソッド参照を行うためのクラス。
+	 * 難解である。
+	 *
+     * Returns true if the predicate evaluates to true for any element of the collection, or return false.
+     * Returns false if the collection is empty.
+     *
+     * @since 5.0
+
+    <P> boolean anySatisfyWith(Predicate2<? super T, ? super P> predicate, P parameter);
+	 */
+
 	@Test
 	public void doAnyPeopleHaveCatsRefactor() {
 		boolean peopleHaveCatsLambda = this.people.anySatisfy(person -> person.hasPet(PetType.CAT));
@@ -318,6 +344,7 @@ public class Exercise2Test extends PetDomainForKata {
 
 		// use method reference, NOT lambdas, to solve the problem below
 		boolean peopleHaveCatsMethodRef = false;
+		peopleHaveCatsMethodRef = this.people.anySatisfyWith(Person::hasPet, PetType.CAT);
 		Assert.assertTrue(peopleHaveCatsMethodRef);
 	}
 
