@@ -270,22 +270,42 @@ public class Exercise2Test extends PetDomainForKata {
 	 * @see #flatCollect(Function)
 	 *
 	//<V, R extends Collection<V>> R flatCollect(Function<? super T, ? extends Iterable<V>> function, R target);
+	 *
+	 *
+	 *
+	 * このテストテストでは、もう一つ、メソッドが登場している。
+	 * Sets.mutable.with(...)だ。
+	 * Setの初期化がなされている。
+	 * withとofの二つのメソッドが用意されているが違いが見当たらない。
+	 * 文字数がofの方が少ない。
+	 *
 	 */
 
 	@Test
 	public void getAllPetsOfAllPeople() {
 		Function<Person, Iterable<PetType>> function = person -> person.getPetTypes();
 		MutableSet<PetType> petTypes = this.people.flatCollect(function, Sets.mutable.empty());
+		//or
+		petTypes = this.people.flatCollect(function).toSet();
 		Assert.assertEquals(
 				Sets.mutable.with(PetType.CAT, PetType.DOG, PetType.TURTLE, PetType.HAMSTER, PetType.BIRD,
 						PetType.SNAKE),
 				petTypes);
 	}
 
+
+	/*
+	 * ここではmutableListの初期化を行っている。
+	 * mutableListの初期化は以下のように記述
+	 * Lists.mutable.with(...)
+	 * ofメソッドもあるが、こちらも違いは文字数のみ。
+	 */
+
 	@Test
 	public void getFirstNamesOfAllPeople() {
-		MutableList<String> firstNames = null; // Transform this.people into a
+		//MutableList<String> firstNames = null; // Transform this.people into a
 												// list of first names
+		MutableList<String> firstNames = this.people.collect(Person::getFirstName);
 		Assert.assertEquals(
 				Lists.mutable.with("Mary", "Bob", "Ted", "Jake", "Barry", "Terry", "Harry", "John"),
 				firstNames);

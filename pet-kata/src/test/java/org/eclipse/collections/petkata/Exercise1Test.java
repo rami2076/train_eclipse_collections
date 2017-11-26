@@ -96,6 +96,8 @@ public class Exercise1Test extends PetDomainForKata {
 		//or
 		//メソッド参照の記述方法がわからなかったが、とりあえず進めようという判断。
 		peopleWithCats = this.people.select(person->person.hasPet(PetType.CAT));
+		//メソッド参照で記述するメソッドを発見。
+		peopleWithCats = this.people.selectWith(Person::hasPet,PetType.CAT);
 		Verify.assertSize(2, peopleWithCats);
 	}
 
