@@ -348,6 +348,15 @@ public class Exercise2Test extends PetDomainForKata {
 		Assert.assertTrue(peopleHaveCatsMethodRef);
 	}
 
+	/*
+	 * doAllPeopleHaveCatsのrefactoringを行ったもの。
+	 * method参照で記述できるallSatisfyWith methodのテスト
+	 * 上のとほぼ同じ。
+	 *
+	 */
+
+
+
 	@Test
 	public void doAllPeopleHaveCatsRefactor() {
 		boolean peopleHaveCatsLambda = this.people.allSatisfy(person -> person.hasPet(PetType.CAT));
@@ -355,6 +364,7 @@ public class Exercise2Test extends PetDomainForKata {
 
 		// use method reference, NOT lambdas, to solve the problem below
 		boolean peopleHaveCatsMethodRef = true;
+		peopleHaveCatsMethodRef = this.people.allSatisfyWith(Person::hasPet, PetType.CAT);
 		Assert.assertFalse(peopleHaveCatsMethodRef);
 	}
 
