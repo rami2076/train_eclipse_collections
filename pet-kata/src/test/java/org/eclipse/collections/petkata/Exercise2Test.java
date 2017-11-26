@@ -368,6 +368,8 @@ public class Exercise2Test extends PetDomainForKata {
 	 *  getPeopleWithCats のrefactoring
 	 *  method referenceで記述。
 	 *  猫を飼っている飼い主をのリスト返す。
+	 *
+	 *  train of  selectWith method
 	 */
 
 	@Test
@@ -378,10 +380,17 @@ public class Exercise2Test extends PetDomainForKata {
 		Verify.assertSize(2, peopleWithCatsMethodRef);
 	}
 
+	/*
+	 * getPeopleWithoutCatsのrefactoring
+	 * train of rejectWith method
+	 * 猫を飼っている飼い主を排除する。
+	 */
+
 	@Test
 	public void getPeopleWithoutCatsRefactor() {
 		// use method reference, NOT lambdas, to solve the problem below
 		MutableList<Person> peopleWithoutCatsMethodRef = null;
+		peopleWithoutCatsMethodRef = this.people.rejectWith(Person::hasPet,PetType.CAT);
 		Verify.assertSize(6, peopleWithoutCatsMethodRef);
 	}
 }
