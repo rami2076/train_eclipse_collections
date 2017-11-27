@@ -253,7 +253,20 @@ public class Exercise3Test extends PetDomainForKata {
 		Verify.assertIterableSize(1, multimap.get(PetType.BIRD));
 		Verify.assertIterableSize(1, multimap.get(PetType.SNAKE));
 
-		// －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+		// othewise－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+		//After
+		final MutableMultimap<PetType, Person> peopleByPetType_ = Multimaps.mutable.set.empty();
+		for (final Person person : this.people) {
+		    final MutableList<Pet> pets = person.getPets();
+		    for (final Pet pet : pets) {
+		        peopleByPetType_.put(pet.getType(), person);
+		    }
+		}
+		//Lambda in Lambda になってしまって具合は悪いですが、こんな風に書けなくもないです。
 
+		//Lambda_in_Lambda
+		this.people.each(person -> {
+		    person.getPets().each(pet -> peopleByPetType_.put(pet.getType(), person));
+		});
 	}
 }
