@@ -16,6 +16,8 @@ import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.map.MutableMap;
 import org.eclipse.collections.api.multimap.Multimap;
+import org.eclipse.collections.api.multimap.MutableMultimap;
+import org.eclipse.collections.api.multimap.list.MutableListMultimap;
 import org.eclipse.collections.api.multimap.set.MutableSetMultimap;
 import org.eclipse.collections.api.set.MutableSet;
 import org.eclipse.collections.impl.factory.Bags;
@@ -118,8 +120,19 @@ public class Exercise3Test extends PetDomainForKata {
 		// －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 	}
 
+	/*
+	 *getPeopleByLastName
+	 *LastNameで収集し重複を除去せずをkeyでgroupingする。
+	 *MultiMapの商法は上記の通りであるが、いまいち使用状況の想像がつかない。
+	 *グルーピングしたいときに用いる様子がわかってきた。
+	 *
+	 */
+
 	@Test
 	public void getPeopleByLastName() {
+
+		// EC以前の記述－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 		// Do you recognize this pattern?
 		MutableMap<String, MutableList<Person>> lastNamesToPeople = Maps.mutable.empty();
 		for (Person person : this.people) {
@@ -133,10 +146,22 @@ public class Exercise3Test extends PetDomainForKata {
 		}
 		Verify.assertIterableSize(3, lastNamesToPeople.get("Smith"));
 
+		// MutiMapを用いた記述－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 		// Hint: use the appropriate method on this.people to create a Multimap<String, Person>
 		Multimap<String, Person> byLastNameMultimap = null;
+		byLastNameMultimap = this.people.groupBy(person->person.getLastName());//lambda
+		//or
+		byLastNameMultimap = this.people.groupBy(Person::getLastName);//method reference
+		//or
+		final MutableMultimap<String, Person> byLastNameMultimap_ = Multimaps.mutable.list.empty();
+		this.people.each(person -> byLastNameMultimap_.put(person.getLastName(), person));
+		//or
+		MutableListMultimap<String, Person> byLastNameMultimap__ = null;
 
 		Verify.assertIterableSize(3, byLastNameMultimap.get("Smith"));
+		// －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 	}
 
 	@Test
