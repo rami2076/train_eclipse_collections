@@ -26,6 +26,7 @@ import org.eclipse.collections.impl.factory.Maps;
 import org.eclipse.collections.impl.factory.Multimaps;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.tuple.Tuples;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -150,22 +151,58 @@ public class Exercise3Test extends PetDomainForKata {
 
 		// Hint: use the appropriate method on this.people to create a Multimap<String, Person>
 		Multimap<String, Person> byLastNameMultimap = null;
-		byLastNameMultimap = this.people.groupBy(person->person.getLastName());//lambda
-		//or
-		byLastNameMultimap = this.people.groupBy(Person::getLastName);//method reference
-		//or
+		//byLastNameMultimap = this.people.groupBy(person -> person.getLastName());// lambda
+		// or
+		byLastNameMultimap = this.people.groupBy(Person::getLastName);// method reference
+		// or
 		final MutableMultimap<String, Person> byLastNameMultimap_ = Multimaps.mutable.list.empty();
 		this.people.each(person -> byLastNameMultimap_.put(person.getLastName(), person));
+		// or
+		MutableListMultimap<String, Person> byLastNameMultimap__ =Multimaps.mutable.list.empty();
 		//or
-		MutableListMultimap<String, Person> byLastNameMultimap__ = null;
+		//特に分からない。
+		this.people.each(person -> byLastNameMultimap__.add(Tuples.pair(person.getLastName(), person)));
 
 		Verify.assertIterableSize(3, byLastNameMultimap.get("Smith"));
 		// －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 	}
 
+	/*
+	 *飼っているペットの種類と飼い主を関連付けする。
+	 *
+	 *
+	 *groupByと同じFunctionを行っているとのことだが、詳細の理解に及んでいない。
+	 * * Example using a Java 8 method reference:
+     * <pre>
+     * FastListMultimap&lt;String, Person&gt; peopleByLastName =
+     *     people.groupBy(Person::getLastName, new FastListMultimap&lt;String, Person&gt;());
+     * </pre>
+     * <p>
+     * Example using an anonymous inner class:
+     * <pre>
+     * FastListMultimap&lt;String, Person&gt; peopleByLastName =
+     *     people.groupBy(new Function&lt;Person, String&gt;()
+     *     {
+     *         public String valueOf(Person person)
+     *         {
+     *             return person.getLastName();
+     *         }
+     *     }, new FastListMultimap&lt;String, Person&gt;());
+     * </pre>
+     *
+     * @since 1.0
+    <V, R extends MutableMultimap<V, T>> R groupBy(Function<? super T, ? extends V> function, R target);
+
+	 *
+	 */
+
 	@Test
 	public void getPeopleByTheirPets() {
+
+		// before－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+
 		// Do you recognize this pattern?
 		MutableMap<PetType, MutableSet<Person>> peopleByPetType = Maps.mutable.empty();
 
@@ -189,9 +226,30 @@ public class Exercise3Test extends PetDomainForKata {
 		Verify.assertIterableSize(1, peopleByPetType.get(PetType.BIRD));
 		Verify.assertIterableSize(1, peopleByPetType.get(PetType.SNAKE));
 
+
+		// after－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+
 		// Hint: use the appropriate method on this.people with a target collection to create a MutableSetMultimap<String, Person>
 		// Hint: this.people is a MutableList, so it will return a MutableListMultimap without a target collection
 		MutableSetMultimap<PetType, Person> multimap = null;
+		Function<Person,MutableBag<PetType>> function = person->person.getPetTypes();
+		multimap = this.people.groupByEach(function, Multimaps.mutable.set.empty());
+		//or
+		multimap = this.people.groupByEach(person->person.getPetTypes(), Multimaps.mutable.set.empty());
+		//	おそらく、
+		//Function<T,Iteratable<V>>をMulitiMap<Ｖ,T>にするメソッド
+		//過程でMutableBag<PetType>が生成されるPetTypeはVに当たる。
+		//BagをもとにSetが生成される。
+		//Ｔ型はPerson
+		//MutableSetMultimap<PetType, Person>
+		//multimapにpettypeが追加されpettypeにmapの相方の人が追加される。
+		//とか思っていたけどオブジェクトの中身みたらちょっと違う。
+		//tableにデータが入ってる様子。要素が32ある。
+		//pettype毎にデータがpersonが関連付けされている様子。
+		//デバッグすると楽しい。
+
+
 
 		Verify.assertIterableSize(2, multimap.get(PetType.CAT));
 		Verify.assertIterableSize(2, multimap.get(PetType.DOG));
@@ -199,5 +257,8 @@ public class Exercise3Test extends PetDomainForKata {
 		Verify.assertIterableSize(1, multimap.get(PetType.TURTLE));
 		Verify.assertIterableSize(1, multimap.get(PetType.BIRD));
 		Verify.assertIterableSize(1, multimap.get(PetType.SNAKE));
+
+		// －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 	}
 }

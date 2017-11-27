@@ -19,8 +19,7 @@ public abstract class PetDomainForKata {
 
 	@Before
 	public void setUp() throws Exception {
-		this.people = Lists.mutable.with(
-				new Person("Mary", "Smith").addPet(PetType.CAT, "Tabby", 2),
+		this.people = Lists.mutable.with(new Person("Mary", "Smith").addPet(PetType.CAT, "Tabby", 2),
 				new Person("Bob", "Smith").addPet(PetType.CAT, "Dolly", 3).addPet(PetType.DOG, "Spot", 2),
 				new Person("Ted", "Smith").addPet(PetType.DOG, "Spike", 4),
 				new Person("Jake", "Snake").addPet(PetType.SNAKE, "Serpy", 1),
