@@ -24,9 +24,9 @@ subprojects {
   }
 
   dependencies {
-    compile 'org.eclipse.collections:eclipse-collections-api:8.2.0'
-    compile 'org.eclipse.collections:eclipse-collections:8.2.0'
-    testCompile 'org.eclipse.collections:eclipse-collections-testutils:8.2.0'
+    compile 'org.eclipse.collections:eclipse-collections-api:9.0.0'
+    compile 'org.eclipse.collections:eclipse-collections:9.0.0'
+    testCompile 'org.eclipse.collections:eclipse-collections-testutils:9.0.0'
     compile 'junit:junit:4.12'
   }
 }
