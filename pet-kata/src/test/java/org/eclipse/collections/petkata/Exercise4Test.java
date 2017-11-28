@@ -20,9 +20,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.collections.api.RichIterable;
+import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableIntList;
 import org.eclipse.collections.api.set.primitive.IntSet;
+import org.eclipse.collections.impl.factory.Bags;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.test.Verify;
@@ -228,7 +230,12 @@ public class Exercise4Test extends PetDomainForKata {
 
 	@Test
 	public void streamsToECRefactor2() {
+
+
+		// Start Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 		// Hint: Try to replace the Map<PetType, Long> with a Bag<PetType>
+		// before-------------------
 		Map<PetType, Long> countsStream = Collections.unmodifiableMap(
 				this.people.stream()
 						.flatMap(person -> person.getPets().stream())
@@ -240,9 +247,32 @@ public class Exercise4Test extends PetDomainForKata {
 		Assert.assertEquals(Long.valueOf(1L), countsStream.get(PetType.SNAKE));
 		Assert.assertEquals(Long.valueOf(1L), countsStream.get(PetType.TURTLE));
 		Assert.assertEquals(Long.valueOf(1L), countsStream.get(PetType.BIRD));
+		// affter-------------------
+		//getTypes自体がBagを生成するメソッドなのであまり学習になりにくい。
+		//そのため、petの配列を用いた書き方をしていると思われる。
+		Bag<PetType> countsStream_EC =  this.people.flatCollect(person->person.getPetTypes(),Bags.mutable.empty());
+		//こちらの書き方が正しい。記述なのでこちらのみテストする。
+		Bag<PetType> countsStream_EC_Othewise = this.people.flatCollect(Person::getPets).countBy(Pet::getType);
+
+		//メソッド assertEquals(Object, Object) は型 Assert であいまいです。
+		//といわれたので、書き換えを行った。
+		//overloadでvalueOf methodが被っている箇所があるらしい。そのため型が合間になっているらしいとのこと。
+		//TODO::mean reaserch
+		Assert.assertEquals(2, countsStream_EC_Othewise.occurrencesOf(PetType.CAT));
+		Assert.assertEquals(2L, countsStream_EC_Othewise.occurrencesOf(PetType.DOG));
+		Assert.assertEquals(2, countsStream_EC_Othewise.occurrencesOf(PetType.HAMSTER));
+		Assert.assertEquals(1, countsStream_EC_Othewise.occurrencesOf(PetType.SNAKE));
+		Assert.assertEquals(1, countsStream_EC_Othewise.occurrencesOf(PetType.TURTLE));
+		//Assert.assertEquals(Long.valueOf(1L), countsStream_EC_Othewise.occurrencesOf(PetType.BIRD));
+		Assert.assertEquals(1L, countsStream_EC_Othewise.occurrencesOf(PetType.BIRD));
+
+
+
+		// End Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 
 		// Don't forget to comment this out or delete it when you are done
-		Assert.fail("Refactor to Eclipse Collections");
+		//Assert.fail("Refactor to Eclipse Collections");
 	}
 
 	/**
