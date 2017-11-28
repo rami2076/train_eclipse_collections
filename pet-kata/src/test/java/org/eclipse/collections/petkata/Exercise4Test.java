@@ -83,7 +83,7 @@ public class Exercise4Test extends PetDomainForKata {
 
 		// otherwise-------------------
 		// asLazy で LazyListIteratbleに変換される。
-		//TODO::遅延反復の理解不足。
+		// TODO::遅延反復の理解不足。
 		RichIterable<Person> test = this.people.asLazy();
 
 		MutableIntList petAges_EC_Otherwise = this.people.asLazy()
@@ -180,13 +180,31 @@ public class Exercise4Test extends PetDomainForKata {
 		// End Section7 －－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 	}
 
+	/*
+	 *
+	 */
+
 	@Test
 	public void streamsToECRefactor1() {
+
+		// Start Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+		// before-------------------
 		// find Bob Smith
 		Person person = this.people.stream()
 				.filter(each -> each.named("Bob Smith"))
 				.findFirst().get();
+		// after-------------------
+		Person person_EC = this.people.detectWith(Person::named, "Bob Smith");
+		// or
+		//TODO::eachを引数に渡している意味は少しわからない。personでもよさそうだが、、、
+		//それぞれの名前を判別していくという意味合いか？
+		Person person_EC_Otherwise = this.people.detect(each -> each.named("Bob Smith"));
+		// End Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
+		// Start Section2－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
+		// before-------------------
 		// get Bob Smith's pets' names
 		String names = person.getPets().stream()
 				.map(Pet::getName)
@@ -194,8 +212,18 @@ public class Exercise4Test extends PetDomainForKata {
 
 		Assert.assertEquals("Dolly & Spot", names);
 
+		// after-------------------
+		String names_EC = person_EC.getPets().collect(Pet::getName).makeString(" & ");
+		Assert.assertEquals("Dolly & Spot", names_EC);
+		//or
+		String names_EC_Otherwise = person_EC_Otherwise.getPets().collect(Pet::getName).makeString(" & ");
+		Assert.assertEquals("Dolly & Spot", names_EC_Otherwise);
+
+
+		// End Section2－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+
 		// Don't forget to comment this out or delete it when you are done
-		Assert.fail("Refactor to Eclipse Collections");
+		//Assert.fail("Refactor to Eclipse Collections");
 	}
 
 	@Test
