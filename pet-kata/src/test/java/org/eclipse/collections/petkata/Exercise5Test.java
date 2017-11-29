@@ -15,9 +15,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.partition.list.PartitionMutableList;
 import org.eclipse.collections.api.set.primitive.MutableIntSet;
-import org.eclipse.collections.impl.factory.Sets;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.factory.primitive.IntSets;
 import org.eclipse.collections.impl.test.Verify;
 import org.junit.Assert;
@@ -82,28 +83,31 @@ public class Exercise5Test extends PetDomainForKata {
 	public void addPetAgesToExistingSet() {
 		// Hint: Use petAges as a target collection
 		MutableIntSet petAges = IntSets.mutable.with(5);
-		petAges = this.people.flatCollect(Person::getPets).collectInt(Pet::getAge,petAges);
+		petAges = this.people.flatCollect(Person::getPets).collectInt(Pet::getAge, petAges);
 		Assert.assertEquals(IntSets.mutable.with(1, 2, 3, 4, 5), petAges);
 	}
 
-
+	/*
+	 * リファクタリング。
+	 */
 
 	@Test
 	public void refactorToEclipseCollections() {
+
+		// before-------------------
+
 		// Replace List and ArrayList with Eclipse Collections types
 		List<Person> people = new ArrayList<>();
 		people.add(new Person("Mary", "Smith").addPet(PetType.CAT, "Tabby", 2));
-		people.add(new Person("Bob", "Smith")
-				.addPet(PetType.CAT, "Dolly", 3)
-				.addPet(PetType.DOG, "Spot", 2));
+		people.add(new Person("Bob", "Smith").addPet(PetType.CAT, "Dolly", 3).addPet(PetType.DOG, "Spot", 2));
 		people.add(new Person("Ted", "Smith").addPet(PetType.DOG, "Spike", 4));
 		people.add(new Person("Jake", "Snake").addPet(PetType.SNAKE, "Serpy", 1));
 		people.add(new Person("Barry", "Bird").addPet(PetType.BIRD, "Tweety", 2));
 		people.add(new Person("Terry", "Turtle").addPet(PetType.TURTLE, "Speedy", 1));
-		people.add(new Person("Harry", "Hamster")
-				.addPet(PetType.HAMSTER, "Fuzzy", 1)
-				.addPet(PetType.HAMSTER, "Wuzzy", 1));
+		people.add(new Person("Harry", "Hamster").addPet(PetType.HAMSTER, "Fuzzy", 1).addPet(PetType.HAMSTER, "Wuzzy", 1));
 		people.add(new Person("John", "Doe"));
+
+
 
 		// Replace Set and HashSet with Eclipse Collections types
 		Set<Integer> petAges = new HashSet<>();
@@ -113,9 +117,35 @@ public class Exercise5Test extends PetDomainForKata {
 			}
 		}
 
-		// extra bonus - convert to a primitive collection
-		Assert.assertEquals("Extra Credit - convert to a primitive collection", Sets.mutable.with(1, 2, 3, 4), petAges);
+		// after-------------------
 
-		Assert.fail("Refactor to Eclipse Collections");
+		MutableList<Person> people_ = Lists.mutable.of(
+				new Person("Mary", "Smith").addPet(PetType.CAT, "Tabby", 2),
+				 new Person("Bob", "Smith").addPet(PetType.CAT, "Dolly", 3).addPet(PetType.DOG, "Spot", 2),
+				 new Person("Ted", "Smith").addPet(PetType.DOG, "Spike", 4),
+				 new Person("Jake", "Snake").addPet(PetType.SNAKE, "Serpy", 1),
+				 new Person("Barry", "Bird").addPet(PetType.BIRD, "Tweety", 2),
+				 new Person("Terry", "Turtle").addPet(PetType.TURTLE, "Speedy", 1),
+				 new Person("Harry", "Hamster").addPet(PetType.HAMSTER, "Fuzzy", 1).addPet(PetType.HAMSTER, "Wuzzy", 1),
+				 new Person("John", "Doe")
+				);
+		//初期化していない場合にはpetAgesを選択できない。
+		//Premitive型も以下の書き方で初期化できる。
+		//ただ、この書き方のほうが記述量は増えることになる。
+		MutableIntSet  petAges_ =IntSets.mutable.empty();
+		petAges_= people_.flatCollect(Person::getPets).collectInt(Pet::getAge,petAges_);
+		//or
+		//最後のtoSetは直前のリストの状態によって生成されるSetの型が変化する。
+		MutableIntSet petAges__ = people_.flatCollect(Person::getPets).collectInt(Pet::getAge).toSet();
+
+
+		//MutableSetとmutableInSetは比較ができない。
+		//と思われる。型の不一致。
+		// extra bonus - convert to a primitive collection
+		//Assert.assertEquals("Extra Credit - convert to a primitive collection", Sets.mutable.with(1, 2, 3, 4), petAges);
+		Assert.assertEquals( IntSets.mutable.with(1, 2, 3, 4), petAges__);
+
+		//Assert.fail("Refactor to Eclipse Collections");
 	}
+
 }
