@@ -24,10 +24,12 @@ import org.eclipse.collections.api.bag.Bag;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.api.list.primitive.MutableIntList;
 import org.eclipse.collections.api.set.primitive.IntSet;
+import org.eclipse.collections.api.tuple.primitive.ObjectIntPair;
 import org.eclipse.collections.impl.factory.Bags;
 import org.eclipse.collections.impl.factory.Sets;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.eclipse.collections.impl.test.Verify;
+import org.eclipse.collections.impl.tuple.primitive.PrimitiveTuples;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -199,8 +201,8 @@ public class Exercise4Test extends PetDomainForKata {
 		// after-------------------
 		Person person_EC = this.people.detectWith(Person::named, "Bob Smith");
 		// or
-		//TODO::eachを引数に渡している意味は少しわからない。personでもよさそうだが、、、
-		//それぞれの名前を判別していくという意味合いか？
+		// TODO::eachを引数に渡している意味は少しわからない。personでもよさそうだが、、、
+		// それぞれの名前を判別していくという意味合いか？
 		Person person_EC_Otherwise = this.people.detect(each -> each.named("Bob Smith"));
 		// End Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
@@ -217,20 +219,31 @@ public class Exercise4Test extends PetDomainForKata {
 		// after-------------------
 		String names_EC = person_EC.getPets().collect(Pet::getName).makeString(" & ");
 		Assert.assertEquals("Dolly & Spot", names_EC);
-		//or
+		// or
 		String names_EC_Otherwise = person_EC_Otherwise.getPets().collect(Pet::getName).makeString(" & ");
 		Assert.assertEquals("Dolly & Spot", names_EC_Otherwise);
 
+		//otherwise と思ったが、namesのほうは同じだった。
+		//find Bob Smith
+		final Person person_ =
+		                this.people
+		                        .select(each -> each.named("Bob Smith"))
+		                        .getFirst();
+
+		//get Bob Smith's pets' names
+		final String names_ =
+		                person_.getPets()
+		                        .collect(Pet::getName)
+		                        .makeString(" & ");
 
 		// End Section2－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 		// Don't forget to comment this out or delete it when you are done
-		//Assert.fail("Refactor to Eclipse Collections");
+		// Assert.fail("Refactor to Eclipse Collections");
 	}
 
 	@Test
 	public void streamsToECRefactor2() {
-
 
 		// Start Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
@@ -248,31 +261,34 @@ public class Exercise4Test extends PetDomainForKata {
 		Assert.assertEquals(Long.valueOf(1L), countsStream.get(PetType.TURTLE));
 		Assert.assertEquals(Long.valueOf(1L), countsStream.get(PetType.BIRD));
 		// affter-------------------
-		//getTypes自体がBagを生成するメソッドなのであまり学習になりにくい。
-		//そのため、petの配列を用いた書き方をしていると思われる。
-		Bag<PetType> countsStream_EC =  this.people.flatCollect(person->person.getPetTypes(),Bags.mutable.empty());
-		//こちらの書き方が正しい。記述なのでこちらのみテストする。
+		// getTypes自体がBagを生成するメソッドなのであまり学習になりにくい。
+		// そのため、petの配列を用いた書き方をしていると思われる。
+		Bag<PetType> countsStream_EC = this.people.flatCollect(person -> person.getPetTypes(), Bags.mutable.empty());
+		// こちらの書き方が正しい。記述なのでこちらのみテストする。
 		Bag<PetType> countsStream_EC_Othewise = this.people.flatCollect(Person::getPets).countBy(Pet::getType);
 
-		//メソッド assertEquals(Object, Object) は型 Assert であいまいです。
-		//といわれたので、書き換えを行った。
-		//overloadでvalueOf methodが被っている箇所があるらしい。そのため型が合間になっているらしいとのこと。
-		//TODO::mean reaserch
+		//otherwise
+		final Bag<PetType> countsStream_ =
+                this.people
+                        .flatCollect(person -> person.getPets())
+                        .collect(pet -> pet.getType())
+                        .toBag();
+		// メソッド assertEquals(Object, Object) は型 Assert であいまいです。
+		// といわれたので、書き換えを行った。
+		// overloadでvalueOf methodが被っている箇所があるらしい。そのため型が合間になっているらしいとのこと。
+		// TODO::mean reaserch
 		Assert.assertEquals(2, countsStream_EC_Othewise.occurrencesOf(PetType.CAT));
 		Assert.assertEquals(2L, countsStream_EC_Othewise.occurrencesOf(PetType.DOG));
 		Assert.assertEquals(2, countsStream_EC_Othewise.occurrencesOf(PetType.HAMSTER));
 		Assert.assertEquals(1, countsStream_EC_Othewise.occurrencesOf(PetType.SNAKE));
 		Assert.assertEquals(1, countsStream_EC_Othewise.occurrencesOf(PetType.TURTLE));
-		//Assert.assertEquals(Long.valueOf(1L), countsStream_EC_Othewise.occurrencesOf(PetType.BIRD));
+		// Assert.assertEquals(Long.valueOf(1L), countsStream_EC_Othewise.occurrencesOf(PetType.BIRD));
 		Assert.assertEquals(1L, countsStream_EC_Othewise.occurrencesOf(PetType.BIRD));
-
-
 
 		// End Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
-
 		// Don't forget to comment this out or delete it when you are done
-		//Assert.fail("Refactor to Eclipse Collections");
+		// Assert.fail("Refactor to Eclipse Collections");
 	}
 
 	/**
@@ -280,6 +296,9 @@ public class Exercise4Test extends PetDomainForKata {
 	 */
 	@Test
 	public void streamsToECRefactor3() {
+
+		// Start Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+		// before-------------------
 		// Hint: The result of groupingBy/counting can almost always be replaced by a Bag
 		// Hint: Look for the API on Bag that might return the top 3 pet types
 		List<Map.Entry<PetType, Long>> favoritesStream = this.people.stream()
@@ -294,8 +313,69 @@ public class Exercise4Test extends PetDomainForKata {
 		Verify.assertContains(new AbstractMap.SimpleEntry<>(PetType.CAT, Long.valueOf(2)), favoritesStream);
 		Verify.assertContains(new AbstractMap.SimpleEntry<>(PetType.DOG, Long.valueOf(2)), favoritesStream);
 		Verify.assertContains(new AbstractMap.SimpleEntry<>(PetType.HAMSTER, Long.valueOf(2)), favoritesStream);
+		// affter-------------------
+		Bag<PetType> favoritesStream_EC = this.people.flatCollect(Person::getPets).countBy(Pet::getType);
+		MutableList<ObjectIntPair<PetType>> favorites = (MutableList<ObjectIntPair<PetType>>) favoritesStream_EC
+				.topOccurrences(3);
+		// or
+		MutableList<ObjectIntPair<PetType>> favorites_EC = this.people
+				.flatCollect(Person::getPets)
+				.countBy(Pet::getType)
+				.topOccurrences(3);
+		// otherwise
+		MutableList<ObjectIntPair<PetType>> favorites_ = this.people
+				.asLazy()
+				.flatCollect(Person::getPets)
+				.countBy(Pet::getType)
+				.topOccurrences(3)
+				.toList();
+		// 解答にはtoListが抜けている。
+
+		// 遅延反復の配列にすると型を充てることができない?
+		// .toListを割り当てることで、型が一致リストまで生成され問題解消。
+		Verify.assertSize(3, favorites);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.CAT, 2), favorites_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.DOG, 2), favorites_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.HAMSTER, 2), favorites_);
+
+		// 遅延反復の配列にすると型を充てることができない
+		Verify.assertSize(3, favorites);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.CAT, 2), favorites_EC);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.DOG, 2), favorites_EC);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.HAMSTER, 2), favorites_EC);
+
+		Verify.assertSize(3, favorites_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.CAT, 2), favorites);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.DOG, 2), favorites);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.HAMSTER, 2), favorites);
+
+		// otherwise
+		List<ObjectIntPair<PetType>> favoritesStream_ = this.people
+				.flatCollect(p -> p.getPets())
+				.collect(pet -> pet.getType())
+				.toBag()
+				.topOccurrences(3);
+		// TODO::finalを付けた時とつけないときの違いが判らない
+		final List<ObjectIntPair<PetType>> favoritesStream__ = this.people
+				.flatCollect(p -> p.getPets())
+				.collect(pet -> pet.getType())
+				.toBag()
+				.topOccurrences(3);
+		//countByはより簡易に自由度のある集約ができる。
+		MutableList<ObjectIntPair<PetType>> favoritesStream___ = this.people
+				.flatCollect(p -> p.getPets())
+				.collect(pet -> pet.getType())
+				.toBag()
+				.topOccurrences(3);
+
+		Verify.assertSize(3, favoritesStream_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.CAT, 2), favoritesStream_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.DOG, 2), favoritesStream_);
+		Verify.assertContains(PrimitiveTuples.pair(PetType.HAMSTER, 2), favoritesStream_);
+
+		// End Section1－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
 
 		// Don't forget to comment this out or delete it when you are done
-		Assert.fail("Refactor to Eclipse Collections");
+		// Assert.fail("Refactor to Eclipse Collections");
 	}
 }
