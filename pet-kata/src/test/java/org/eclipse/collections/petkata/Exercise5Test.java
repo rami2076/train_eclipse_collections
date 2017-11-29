@@ -72,15 +72,21 @@ public class Exercise5Test extends PetDomainForKata {
 	}
 
 	/*
+	 *RichIterableにあるメソッド。
+	 *凄く使いやすい。
 	 *
+	 *すでにあるsetに新しいsetを追加するメソッド。
 	 */
 
 	@Test
 	public void addPetAgesToExistingSet() {
 		// Hint: Use petAges as a target collection
 		MutableIntSet petAges = IntSets.mutable.with(5);
+		petAges = this.people.flatCollect(Person::getPets).collectInt(Pet::getAge,petAges);
 		Assert.assertEquals(IntSets.mutable.with(1, 2, 3, 4, 5), petAges);
 	}
+
+
 
 	@Test
 	public void refactorToEclipseCollections() {
