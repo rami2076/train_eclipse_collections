@@ -293,6 +293,10 @@ public class Exercise4Test extends PetDomainForKata {
 
 	/**
 	 * The purpose of this test is to determine the top 3 pet types.
+	 *
+	 *TODO::ObjectIntPairへの理解
+	 *TODO::Stream文の理解
+	 *TODO::Entryクラスの理解
 	 */
 	@Test
 	public void streamsToECRefactor3() {
