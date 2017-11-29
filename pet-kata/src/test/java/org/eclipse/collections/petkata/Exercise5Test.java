@@ -32,10 +32,10 @@ public class Exercise5Test extends PetDomainForKata {
 	@Test
 	public void partitionPetAndNonPetPeople() {
 		PartitionMutableList<Person> partitionMutableList = null;
-		partitionMutableList = this.people.partition(person-> person.isPetPerson());
-		//TODO::どういう流れかわからないが、predicateで指定した関数でpositive とnegativeに分割している。
-		//おそらく、入れるときにポジティブとネガティブにいれてるのだと思うが、ソース見ただけではわからない。
-		//デバッグすると流れはわかるはず。
+		partitionMutableList = this.people.partition(person -> person.isPetPerson());
+		// TODO::どういう流れかわからないが、predicateで指定した関数でpositive とnegativeに分割している。
+		// おそらく、入れるときにポジティブとネガティブにいれてるのだと思うが、ソース見ただけではわからない。
+		// デバッグすると流れはわかるはず。
 		Verify.assertSize(7, partitionMutableList.getSelected());
 		Verify.assertSize(1, partitionMutableList.getRejected());
 	}
@@ -53,20 +53,27 @@ public class Exercise5Test extends PetDomainForKata {
 	@Test
 	public void getOldestPet() {
 		Pet oldestPet = null;
-		//デバッグしてみると、順次、値を比較してくれている。
-		oldestPet = this.people.flatCollect(Person::getPets).maxBy(pet->pet.getAge());
+		// デバッグしてみると、順次、値を比較してくれている。
+		oldestPet = this.people.flatCollect(Person::getPets).maxBy(pet -> pet.getAge());
 		Assert.assertEquals(PetType.DOG, oldestPet.getType());
 		Assert.assertEquals(4, oldestPet.getAge());
 	}
 
 	/*
-	 *
+	 *数値計算はに関しては、
+	 *primitive type iterable に多く含まれる。
+	 *今回はintiterableを使用。
 	 */
 	@Test
 	public void getAveragePetAge() {
 		double averagePetAge = 0;
+		averagePetAge = this.people.flatCollect(Person::getPets).collectInt(Pet::getAge).average();
 		Assert.assertEquals(1.8888888888888888, averagePetAge, 0.00001);
 	}
+
+	/*
+	 *
+	 */
 
 	@Test
 	public void addPetAgesToExistingSet() {
