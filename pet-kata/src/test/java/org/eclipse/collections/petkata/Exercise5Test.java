@@ -84,6 +84,10 @@ public class Exercise5Test extends PetDomainForKata {
 		// Hint: Use petAges as a target collection
 		MutableIntSet petAges = IntSets.mutable.with(5);
 		petAges = this.people.flatCollect(Person::getPets).collectInt(Pet::getAge, petAges);
+		//otherwise
+		//MutableSet#addAllメソッドでもできる。
+		petAges.addAll(this.people.flatCollect(Person::getPets).collectInt(Pet::getAge));
+
 		Assert.assertEquals(IntSets.mutable.with(1, 2, 3, 4, 5), petAges);
 	}
 
@@ -137,6 +141,7 @@ public class Exercise5Test extends PetDomainForKata {
 		//or
 		//最後のtoSetは直前のリストの状態によって生成されるSetの型が変化する。
 		MutableIntSet petAges__ = people_.flatCollect(Person::getPets).collectInt(Pet::getAge).toSet();
+		//otherwise
 
 
 		//MutableSetとmutableInSetは比較ができない。
