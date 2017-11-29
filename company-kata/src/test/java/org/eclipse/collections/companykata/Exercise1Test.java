@@ -26,41 +26,37 @@ import org.junit.Test;
  *
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/1">Exercise 1 Slides</a>
  */
-public class Exercise1Test extends CompanyDomainForKata
-{
-    @Test
-    public void getCustomerNames()
-    {
-        /**
-         * Get the name of each of the company's customers.
-         */
-        Function<Customer, String> nameFunction = Customer::getName;
-        MutableList<String> customerNames = null;  // this.company.getCustomers()...
+public class Exercise1Test extends CompanyDomainForKata {
+	@Test
+	public void getCustomerNames() {
+		/**
+		 * Get the name of each of the company's customers.
+		 */
+		Function<Customer, String> nameFunction = Customer::getName;
+		MutableList<String> customerNames = null; // this.company.getCustomers()...
 
-        MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
-        Assert.assertEquals(expectedNames, customerNames);
-    }
+		MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
+		Assert.assertEquals(expectedNames, customerNames);
+	}
 
-    @Test
-    public void getCustomerCities()
-    {
-        /**
-         * Get the city for each of the company's customers.
-         */
-        MutableList<String> customerCities = null;  // this.company.getCustomers()...
+	@Test
+	public void getCustomerCities() {
+		/**
+		 * Get the city for each of the company's customers.
+		 */
+		MutableList<String> customerCities = null; // this.company.getCustomers()...
 
-        MutableList<String> expectedCities = Lists.mutable.with("London", "Liphook", "London");
-        Assert.assertEquals(expectedCities, customerCities);
-    }
+		MutableList<String> expectedCities = Lists.mutable.with("London", "Liphook", "London");
+		Assert.assertEquals(expectedCities, customerCities);
+	}
 
-    @Test
-    public void getLondonCustomers()
-    {
-        /**
-         * Which customers come from London? Get a collection of those which do.
-         */
-        MutableList<Customer> customersFromLondon = null; // this.company.getCustomers()...
+	@Test
+	public void getLondonCustomers() {
+		/**
+		 * Which customers come from London? Get a collection of those which do.
+		 */
+		MutableList<Customer> customersFromLondon = null; // this.company.getCustomers()...
 
-        Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
-    }
+		Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
+	}
 }
