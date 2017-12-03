@@ -59,7 +59,7 @@ public class Exercise1Test extends CompanyDomainForKata {
 		 * Get the city for each of the company's customers.
 		 */
 		MutableList<String> customerCities = null; // this.company.getCustomers()...
-
+		customerCities = this.company.getCustomers().collect(Customer::getCity);
 		MutableList<String> expectedCities = Lists.mutable.with("London", "Liphook", "London");
 		Assert.assertEquals(expectedCities, customerCities);
 	}
