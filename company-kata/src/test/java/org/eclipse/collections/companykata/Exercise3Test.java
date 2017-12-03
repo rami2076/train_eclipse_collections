@@ -25,12 +25,13 @@ public class Exercise3Test extends CompanyDomainForKata
 {
     /**
      * Improve {@link Company#getOrders()} without breaking this test.
+     * getOrdersメソッドを改善しよう。
      */
     @Test
     public void improveGetOrders()
     {
         // Delete this line - it's a reminder
-        Assert.fail("Improve getOrders() without breaking this test");
+        //Assert.fail("Improve getOrders() without breaking this test");
         Verify.assertSize(5, this.company.getOrders());
     }
 

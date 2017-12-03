@@ -12,7 +12,6 @@ package org.eclipse.collections.companykata;
 
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.mutable.FastList;
-import org.junit.Assert;
 
 /**
  * A company has a {@link MutableList} of {@link Customer}s.  It has an array of {@link Supplier}s, and a name.
@@ -47,12 +46,13 @@ public class Company
 
     public MutableList<Order> getOrders()
     {
-        Assert.fail("Refactor this code to use Eclipse Collections as part of Exercise 3");
-        MutableList<Order> orders = FastList.newList();
-        for (Customer customer : this.customers)
-        {
-            orders.addAll(customer.getOrders());
-        }
+        //Assert.fail("Refactor this code to use Eclipse Collections as part of Exercise 3");
+    	MutableList<Order> orders=	getCustomers().flatCollect(Customer::getOrders);
+//        MutableList<Order> orders = FastList.newList();
+//        for (Customer customer : this.customers)
+//        {
+//            orders.addAll(customer.getOrders());
+//        }
         return orders;
     }
 
