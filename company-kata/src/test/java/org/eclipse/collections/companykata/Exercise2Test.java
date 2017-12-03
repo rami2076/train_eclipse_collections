@@ -69,6 +69,7 @@ public class Exercise2Test extends CompanyDomainForKata
     public void doAllCustomersLiveInLondon()
     {
         boolean allCustomersFromLondon = true;
+        allCustomersFromLondon = this.company.getCustomers().allSatisfy(CUSTOMER_FROM_LONDON);
         Assert.assertFalse(allCustomersFromLondon);
     }
 
