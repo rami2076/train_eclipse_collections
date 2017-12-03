@@ -44,8 +44,12 @@ public class Exercise3Test extends CompanyDomainForKata
         MutableList<LineItem> allOrderedLineItems = null;
         MutableSet<String> actualItemNames = null;
 
+        allOrderedLineItems = this.company.getOrders().flatCollect(Order::getLineItems);
+        actualItemNames = allOrderedLineItems.collect(LineItem::getName).toSet();
         Verify.assertInstanceOf(MutableSet.class, actualItemNames);
-        Verify.assertInstanceOf(String.class, actualItemNames.getFirst());
+        //TODO:: なぜかMutableSet Object　のgetFirstが非推奨になっていた。リストにして対応。
+        //なぜかの原因は探っていないがアイテムを持つ構造に問題があるのではと推測
+        Verify.assertInstanceOf(String.class, actualItemNames.toList().getFirst());
 
         MutableSet<String> expectedItemNames = Sets.mutable.with(
                 "shed", "big shed", "bowl", "cat", "cup", "chair", "dog",
@@ -57,7 +61,7 @@ public class Exercise3Test extends CompanyDomainForKata
     public void findCustomerNames()
     {
         MutableList<String> names = null;
-
+        names = this.company.getCustomers().collect(Customer::getName);
         MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
         Assert.assertEquals(expectedNames, names);
     }
