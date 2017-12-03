@@ -70,7 +70,7 @@ public class Exercise1Test extends CompanyDomainForKata {
 		 * Which customers come from London? Get a collection of those which do.
 		 */
 		MutableList<Customer> customersFromLondon = null; // this.company.getCustomers()...
-
+		customersFromLondon = this.company.getCustomers().select(custormer->"London".equals(custormer.getCity()));
 		Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
 	}
 }
