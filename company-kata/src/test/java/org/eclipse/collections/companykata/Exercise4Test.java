@@ -106,6 +106,7 @@ public class Exercise4Test extends CompanyDomainForKata
          * Get the actual orders (not their double values) where those orders have a value greater than 2.0.
          */
         MutableList<Order> filtered = null;
+        filtered = Lists.mutable.ofAll(orders).select(order->2.0<order.getValue());
         Assert.assertEquals(Lists.mutable.with(Iterate.getFirst(this.company.getMostRecentCustomer().getOrders())), filtered);
     }
 }
