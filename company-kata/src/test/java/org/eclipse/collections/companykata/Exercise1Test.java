@@ -27,14 +27,28 @@ import org.junit.Test;
  * @see <a href="http://eclipse.github.io/eclipse-collections-kata/company-kata/#/1">Exercise 1 Slides</a>
  */
 public class Exercise1Test extends CompanyDomainForKata {
+
+	/*
+	 * getCustomerNames
+	 * 客の名前をすべて取得する。
+	 *
+	 * モデルの構造の理解。
+	 * companyは一つ
+	 * custormerをもつ
+	 * orderをもつ
+	 * listitemが内包される
+	 *
+	 * suplierは注文を受けるのかなと。
+	 */
+
 	@Test
 	public void getCustomerNames() {
 		/**
 		 * Get the name of each of the company's customers.
 		 */
 		Function<Customer, String> nameFunction = Customer::getName;
-		MutableList<String> customerNames = null; // this.company.getCustomers()...
-
+		//MutableList<String> customerNames = null; // this.company.getCustomers()...
+		MutableList<String> customerNames = this.company.getCustomers().collect(nameFunction);
 		MutableList<String> expectedNames = Lists.mutable.with("Fred", "Mary", "Bill");
 		Assert.assertEquals(expectedNames, customerNames);
 	}
