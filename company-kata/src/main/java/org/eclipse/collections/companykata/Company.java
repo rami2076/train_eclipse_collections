@@ -10,7 +10,6 @@
 
 package org.eclipse.collections.companykata;
 
-import org.eclipse.collections.api.block.predicate.Predicate;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.list.mutable.FastList;
 import org.junit.Assert;
@@ -83,7 +82,8 @@ public class Company
         /**
          * Use a {@link Predicate} to find a {@link Customer} with the name given.
          */
-        Assert.fail("Implement this method as part of Exercise 2");
-        return null;
+    	   Customer targetCustomer=getCustomers().detect(customer->name.equals(customer.getName()));
+        //Assert.fail("Implement this method as part of Exercise 2");
+        return targetCustomer;
     }
 }

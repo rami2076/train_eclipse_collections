@@ -130,6 +130,7 @@ public class Exercise2Test extends CompanyDomainForKata
     public void findMary()
     {
         Customer mary = this.company.getCustomerNamed("Mary");
+
         Assert.assertEquals("customer's name should be Mary", "Mary", mary.getName());
     }
 
