@@ -80,6 +80,7 @@ public class Exercise2Test extends CompanyDomainForKata
     public void howManyCustomersLiveInLondon()
     {
         int numberOfCustomerFromLondon = 0;
+        numberOfCustomerFromLondon = this.company.getCustomers().count(CUSTOMER_FROM_LONDON);
         Assert.assertEquals("Should be 2 London customers", 2, numberOfCustomerFromLondon);
     }
 
