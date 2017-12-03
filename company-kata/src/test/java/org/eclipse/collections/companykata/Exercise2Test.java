@@ -31,7 +31,6 @@ public class Exercise2Test extends CompanyDomainForKata
     {
     	//ラムダで記述できているか確認するためのメソッド。
         String predicateClass =CUSTOMER_FROM_LONDON.getClass().getSimpleName();
-        System.out.println(predicateClass);
         Assert.assertTrue(
         		 "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
                 "AttributePredicate".equals(predicateClass) || predicateClass.startsWith("Exercise2Test$$Lambda"));
@@ -51,11 +50,15 @@ public class Exercise2Test extends CompanyDomainForKata
 
     /**
      * Do any customers come from London? Use the Predicate {@link #CUSTOMER_FROM_LONDON}.
+     * ロンドン出身の客はいますか？
+     * Predicate#を使用しなさい。
      */
     @Test
     public void doAnyCustomersLiveInLondon()
     {
         boolean anyCustomersFromLondon = false;
+
+        anyCustomersFromLondon = this.company.getCustomers().anySatisfy(CUSTOMER_FROM_LONDON);
         Assert.assertTrue(anyCustomersFromLondon);
     }
 
