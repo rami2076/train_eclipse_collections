@@ -116,6 +116,9 @@ public class Exercise2Test extends CompanyDomainForKata
     {
         MutableList<Customer> customersFromLondon = null;
         MutableList<Customer> customersNotFromLondon = null;
+
+        customersFromLondon = this.company.getCustomers().select(CUSTOMER_FROM_LONDON);
+        customersNotFromLondon = this.company.getCustomers().reject(CUSTOMER_FROM_LONDON);
         Verify.assertSize("Should be 2 London customers", 2, customersFromLondon);
         Verify.assertSize("customers not from London", 1, customersNotFromLondon);
     }
