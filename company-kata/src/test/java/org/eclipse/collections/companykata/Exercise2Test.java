@@ -24,23 +24,26 @@ public class Exercise2Test extends CompanyDomainForKata
     /**
      * Set up a {@link Predicate} that tests to see if a {@link Customer}'s city is "London"
      */
-    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = null;
+    private static final Predicate<Customer> CUSTOMER_FROM_LONDON = (custormer)-> "London".equals(custormer.getCity());//null;
 
     @Test
     public void customerFromLondonPredicate()
     {
-        String predicateClass = CUSTOMER_FROM_LONDON.getClass().getSimpleName();
+    	//ラムダで記述できているか確認するためのメソッド。
+        String predicateClass =CUSTOMER_FROM_LONDON.getClass().getSimpleName();
+        System.out.println(predicateClass);
         Assert.assertTrue(
-                "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
+        		 "Solution should use Predicates.attributeEquals() or a lambda but used " + predicateClass,
                 "AttributePredicate".equals(predicateClass) || predicateClass.startsWith("Exercise2Test$$Lambda"));
 
+        //Custormerの生成。London出身のペルソナ。
         Customer customerFromLondon = new Customer("test customer", "London");
-
+        //TO_CITYメソッドを定義できているかのテスト。
         Assert.assertEquals(
                 "Implement Customer.TO_CITY",
                 "London",
                 Customer.TO_CITY.valueOf(customerFromLondon));
-
+        //ラムダの記述であるかのテスト
         Assert.assertTrue(
                 "CUSTOMER_FROM_LONDON should accept Customers where city is London",
                 CUSTOMER_FROM_LONDON.accept(customerFromLondon));

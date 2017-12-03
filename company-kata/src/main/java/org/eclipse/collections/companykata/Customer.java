@@ -10,14 +10,14 @@
 
 package org.eclipse.collections.companykata;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.block.function.AddFunction;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.junit.Assert;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Customers have a name, city and a list of {@link Order}s
@@ -29,7 +29,7 @@ public class Customer
         return null;
     };
 
-    public static final Function<Customer, String> TO_CITY = null;
+    public static final Function<Customer, String> TO_CITY = Customer::getCity;
 
     public static final Function<Customer, Double> TO_TOTAL_ORDER_VALUE = Customer::getTotalOrderValue;
 
