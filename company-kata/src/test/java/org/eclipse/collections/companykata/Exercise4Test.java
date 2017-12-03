@@ -33,7 +33,10 @@ public class Exercise4Test extends CompanyDomainForKata
     public void findSupplierNames()
     {
         MutableList<String> supplierNames = null;
-
+        //MutableList以外のリストが混じっていた時の改定が少し大変。
+        //根の方を改善する。
+        supplierNames = this.company.getSuppliers().collect(Supplier::getName);
+        //supplierNames.each(System.out::println);
         MutableList<String> expectedSupplierNames = Lists.mutable.with(
                 "Shedtastic",
                 "Splendid Crocks",
@@ -53,21 +56,27 @@ public class Exercise4Test extends CompanyDomainForKata
     public void countSuppliersWithMoreThanTwoItems()
     {
         Predicate<Supplier> moreThanTwoItems = null;
+        moreThanTwoItems = supplier-> supplier.getItemNames().size()>2;
         int suppliersWithMoreThanTwoItems = 0;
+        suppliersWithMoreThanTwoItems = this.company.getSuppliers().select(moreThanTwoItems).size();
         Assert.assertEquals("suppliers with more than 2 items", 5, suppliersWithMoreThanTwoItems);
     }
 
     /**
      * Try to solve this without changing the return type of {@link Supplier#getItemNames()}.
+     *
      */
     @Test
     public void whoSuppliesSandwichToaster()
     {
         // Create a Predicate that will check to see if a Supplier supplies a "sandwich toaster".
+
         Predicate<Supplier> suppliesToaster = null;
+         suppliesToaster =supplier -> supplier.getItemNames().anySatisfy(name->"sandwich toaster".equals(name));
 
         // Find one supplier that supplies toasters.
         Supplier toasterSupplier = null;
+        toasterSupplier = this.company.getSuppliers().detect(suppliesToaster);
         Assert.assertNotNull("toaster supplier", toasterSupplier);
         Assert.assertEquals("Doxins", toasterSupplier.getName());
     }

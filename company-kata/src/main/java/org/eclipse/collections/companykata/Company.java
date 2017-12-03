@@ -11,6 +11,7 @@
 package org.eclipse.collections.companykata;
 
 import org.eclipse.collections.api.list.MutableList;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.list.mutable.FastList;
 
 /**
@@ -72,9 +73,9 @@ public class Company
         this.suppliers[this.suppliers.length - 1] = supplier;
     }
 
-    public Supplier[] getSuppliers()
+    public MutableList<Supplier> getSuppliers()
     {
-        return this.suppliers;
+        return Lists.mutable.of(this.suppliers);
     }
 
     public Customer getCustomerNamed(String name)
