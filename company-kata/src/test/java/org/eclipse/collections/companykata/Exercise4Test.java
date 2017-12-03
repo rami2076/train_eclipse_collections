@@ -85,11 +85,16 @@ public class Exercise4Test extends CompanyDomainForKata
     public void filterOrderValues()
     {
         List<Order> orders = this.company.getMostRecentCustomer().getOrders();
+
         /**
          * Get the order values that are greater than 1.5.
          */
+        //別につなげて記述してもよい。
+        Predicate<Double> predicate =val -> val>1.5;
         MutableList<Double> orderValues = null;
+        orderValues = Lists.mutable.ofAll( orders).collect(Order::getValue);
         MutableList<Double> filtered = null;
+        filtered = orderValues.select(predicate);
         Assert.assertEquals(Lists.mutable.with(372.5, 1.75), filtered);
     }
 
