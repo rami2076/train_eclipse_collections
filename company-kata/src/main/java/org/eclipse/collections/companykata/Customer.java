@@ -10,12 +10,10 @@
 
 package org.eclipse.collections.companykata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.eclipse.collections.api.block.function.Function;
 import org.eclipse.collections.api.list.MutableList;
 import org.eclipse.collections.impl.block.function.AddFunction;
+import org.eclipse.collections.impl.factory.Lists;
 import org.eclipse.collections.impl.utility.ListIterate;
 import org.junit.Assert;
 
@@ -36,7 +34,7 @@ public class Customer
     private final String name;
     private final String city;
 
-    private final List<Order> orders = new ArrayList<>();
+    private final MutableList<Order> orders = Lists.mutable.empty();
 
     public Customer(String name, String city)
     {
@@ -54,9 +52,9 @@ public class Customer
         return this.name;
     }
 
-    public List<Order> getOrders()
+    public MutableList<Order> getOrders()
     {
-        return this.orders;
+        return orders;
     }
 
     public void addOrder(Order anOrder)
