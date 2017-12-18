@@ -13,7 +13,6 @@ package org.eclipse.collections.companykata;
 import org.eclipse.collections.api.RichIterable;
 import org.eclipse.collections.api.block.procedure.Procedure;
 import org.eclipse.collections.api.list.MutableList;
-import org.eclipse.collections.impl.block.factory.Procedures;
 import org.eclipse.collections.impl.test.Verify;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,7 +29,10 @@ public class Exercise6Test extends CompanyDomainForKata
     @Test
     public void sortedTotalOrderValue()
     {
-        MutableList<Double> sortedTotalValues = null;
+        MutableList<Double> sortedTotalValues =this.company.getCustomers().
+        		asLazy().
+        		collect(Customer::getTotalOrderValue).
+        		toSortedList() ;
 
         // Don't forget the handy utility methods getFirst() and getLast()...
         Assert.assertEquals("Highest total order value", Double.valueOf(857.0), sortedTotalValues.getLast());
