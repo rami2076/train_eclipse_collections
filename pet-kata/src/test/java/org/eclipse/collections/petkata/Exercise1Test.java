@@ -86,6 +86,10 @@ public class Exercise1Test extends PetDomainForKata {
  * まだ関数使いこなせていない。
  * 答えを参照->https://github.com/toastkidjp/eclipse-collections-kata/blob/toastkidjp_all_solved/pet-kata/src/test/java/org/eclipse/collections/petkata/Exercise1Test.java
  *
+ *
+ *
+ *
+ *
  *select関数のtrain
  */
 	@Test
